@@ -75,7 +75,7 @@
 <script>
     let latitude;
     let longitude;
-    let mapInitialized = false; // Flag to track if map is already initialized
+    let mapInitialized = false;
 
     // Function to initialize Leaflet map
     function initializeMap() {
@@ -119,7 +119,6 @@
                 locationRetrieved = true;
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
-                // Set flag to true after successful retrieval
                 enableClockButton();
                 // Call initializeMap function after latitude and longitude are set
                 initializeMap();
@@ -146,10 +145,7 @@
         document.getElementById('current-time').innerHTML = '<strong>' + currentTime + '</strong>';
     }
 
-    // Call updateTime() function initially to set the current time
     updateTime();
-
-    // Call updateTime() function every second to update the time dynamically
     setInterval(updateTime, 1000);
 
     function disableClockButton() {
@@ -162,9 +158,7 @@
         location_alert.style.display = 'none';
     }
 
-    // Rerender the map after clock action
     Livewire.on('mapRefresh', () => {
-        // Call initializeMap function after clock action to rerender the map
         initializeMap();
     });
 </script>
