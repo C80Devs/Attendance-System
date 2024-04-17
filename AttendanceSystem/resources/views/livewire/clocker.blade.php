@@ -71,12 +71,37 @@
 
 </div>
 
+
 <script>
     let latitude;
     let longitude;
-</script>
+    let mapInitialized = false; // Flag to track if map is already initialized
 
-<script>
+    // Function to initialize Leaflet map
+    function initializeMap() {
+        if (!mapInitialized && latitude !== undefined && longitude !== undefined) {
+            var map = L.map('map', {
+                center: [latitude, longitude],
+                zoom: 30, // Zoom level adjusted for street level
+                zoomControl: false, // Disable zoom control
+                draggable: false, // Disable map dragging
+                doubleClickZoom: false, // Disable double-click zoom
+                scrollWheelZoom: false, // Disable scroll wheel zoom
+                boxZoom: false, // Disable box zoom
+                keyboard: false // Disable keyboard navigation
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup('Clock-in Location')
+                .openPopup();
+
+            mapInitialized = true;
+        }
+    }
 
     let location_alert = document.getElementById("location_alert");
     let locationRetrieved = false;
@@ -96,12 +121,12 @@
                 longitude = position.coords.longitude;
                 // Set flag to true after successful retrieval
                 enableClockButton();
-
+                // Call initializeMap function after latitude and longitude are set
+                initializeMap();
             }, function (error) {
                 console.error('Error getting location:', error);
                 location_alert.style.display = 'block';
                 location_alert.innerText = 'Error: Unable to turn on location.';
-
                 disableClockButton();
             });
         } else {
@@ -127,7 +152,6 @@
     // Call updateTime() function every second to update the time dynamically
     setInterval(updateTime, 1000);
 
-
     function disableClockButton() {
         clock_button.style.display = 'none';
         location_alert.style.display = 'block';
@@ -140,27 +164,8 @@
 
     // Rerender the map after clock action
     Livewire.on('mapRefresh', () => {
-
-        console.log("Okay")
-        setTimeout(() => {
-            var map = L.map('map', {
-                center: [latitude, longitude],
-                zoom: 30, // Zoom level adjusted for street level
-                zoomControl: false, // Disable zoom control
-                draggable: false, // Disable map dragging
-                doubleClickZoom: false, // Disable double-click zoom
-                scrollWheelZoom: false, // Disable scroll wheel zoom
-                boxZoom: false, // Disable box zoom
-                keyboard: false // Disable keyboard navigation
-            });
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([latitude, longitude]).addTo(map)
-                .bindPopup('Clock-in Location')
-                .openPopup();
-        }, 100);
+        // Call initializeMap function after clock action to rerender the map
+        initializeMap();
     });
+</script>
 </script>

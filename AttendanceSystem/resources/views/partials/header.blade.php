@@ -70,10 +70,10 @@
             <ul class="navbar-nav ">
                 @if(\Illuminate\Support\Facades\Auth::user())
                     <li class="nav-item">
-                    <a class="nav-link " href="{{route("dashboard")}}">Home</a>
+                    <a class="nav-link " href="{{route("dashboard")}}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('activity')}}">Activity</a>
+                    <a class="nav-link " href="{{route('activity')}}">Activities</a>
                 </li>
                {{-- <li class="nav-item">
                     <a class="nav-link " href="{{route('profile.edit')}}">Profile</a>
