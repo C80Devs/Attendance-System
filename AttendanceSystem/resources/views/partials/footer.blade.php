@@ -1,3 +1,14 @@
+<footer class="bg-dark text-white py-4 fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>&copy; <span id="currentYear"></span> C80 Limited. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('assets/plugins/bootstrap/js/popper.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -67,7 +78,6 @@
 </script>
 
 
-@livewireScripts
 
 @if ($errors->any())
     @foreach ($errors->all() as $error)

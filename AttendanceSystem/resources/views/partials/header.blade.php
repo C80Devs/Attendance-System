@@ -49,6 +49,8 @@
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
     @livewireStyles
+    @livewireScripts
+
     <style>
         #map {
             height: 180px;
@@ -63,7 +65,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-            <a class="navbar-brand d-lg-none">Welcome, {{ ucwords(\Illuminate\Support\Facades\Auth::user()->firstName ?? 'User') }}</a>
+            <a class="navbar-brand d-lg-none">Hello, {{ ucwords(\Illuminate\Support\Facades\Auth::user()->firstName ?? 'User') }}</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
                 @if(\Illuminate\Support\Facades\Auth::user())

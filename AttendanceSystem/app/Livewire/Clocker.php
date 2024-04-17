@@ -71,6 +71,8 @@ class Clocker extends Component
         $userId = $user->id;
         $today = now()->toDateString();
 
+        $this->dispatch('mapRefresh');
+
         // Check if the user already has a record for today
         $attendanceRecord = AttendanceModel::where('userID', $userId)
             ->whereDate('clockIn', $today)
@@ -93,6 +95,8 @@ class Clocker extends Component
             ->first();
 
         $location = null;
+        $latitude = null;
+        $longitude = null;
 
         if ($attendance && $attendance->clockin_location) {
             $location = $attendance->clockin_location;
