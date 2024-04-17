@@ -14,8 +14,6 @@ class DashboardController extends Controller
     {
         $pageTitle = User::getFirstName() . "Dashboard";
 
-
-
         return view('dashboard',compact('pageTitle', ));
     }
 
@@ -31,7 +29,6 @@ class DashboardController extends Controller
             $attend->clockInHeader = $attend->clockIn ? Carbon::parse($attend->clockIn)->format('D d, M Y h:i A') : 'N/A';
         }
       //  $clockInLocationUrl = "https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center={$latitude},{$longitude}&zoom=15";
-
 
         $count = count($attendance) ?? 0;
 

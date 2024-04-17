@@ -16,8 +16,8 @@
                 Current Time
             </div>
             <div class="card-body mb-4">
-                <h1 class=" mt-2 mb-4" id="current-time">{{ now()->format('h:i:s A') }}</h1>
-                @if($clockedIn)
+                <h1 id="current-time"></h1>
+            @if($clockedIn)
                     <button id="clock-button" wire:click="clock(latitude, longitude)" class="btn btn-danger mb-4"><i
                             class="bi bi-clock text-center"></i>
                         Clock Out
@@ -128,13 +128,22 @@
     }
 
     function updateTime() {
-        document.getElementById('current-time').innerText = new Date().toLocaleTimeString('en-US', {
+        var currentTime = new Date().toLocaleTimeString('en-US', {
             hour: 'numeric',
             minute: 'numeric',
             second: 'numeric',
             hour12: true
         });
+
+        document.getElementById('current-time').innerHTML = '<strong>' + currentTime + '</strong>';
     }
+
+    // Call updateTime() function initially to set the current time
+    updateTime();
+
+    // Call updateTime() function every second to update the time dynamically
+    setInterval(updateTime, 1000);
+
 
     function disableClockButton() {
         clock_button.style.display = 'none';
