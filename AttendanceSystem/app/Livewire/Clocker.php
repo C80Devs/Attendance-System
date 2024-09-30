@@ -32,7 +32,7 @@ class Clocker extends Component
         $distance = $this->calculateDistance($latitude, $longitude, $targetLat, $targetLng);
 
         if ($distance > 20) {
-            session()->flash('error', 'You are not within 20 meters of the office.');
+            session()->flash('error', 'oops! You are not within 20 meters of the office.');
             return;
         }
 
