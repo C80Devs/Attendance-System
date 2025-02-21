@@ -1,5 +1,5 @@
     <div class="row mt-4">
-        <div class="col">
+      {{--  <div class="col">
             <div class="d-flex">
                 @php
                     $currentDate = now()->startOfDay();
@@ -17,6 +17,6 @@
                     </div>
                 @endfor
             </div>
-        </div>
+        </div>--}}
     </div>
 

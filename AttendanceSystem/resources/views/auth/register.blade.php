@@ -3,9 +3,12 @@
 <div class="app horizontal-menu app-auth-sign-up align-content-stretch d-flex flex-wrap justify-content-end">
     <div class="app-auth-background"></div>
     <div class="app-auth-container ">
-        <div class="logo">
-            <a href="{{route('dashboard')}}">{{env('APP_NAME')}}</a>
+        <div class="">
+            <a href="{{ route('dashboard') }}">
+                <img src="{{ asset('c80.svg') }}" alt="{{ env('APP_NAME') }} Logo">
+            </a>
         </div>
+
         <p class="auth-description">Please enter your credentials to create an account.<br>Already have an account? <a
                 href="{{route('login')}}">Sign In</a></p>
 

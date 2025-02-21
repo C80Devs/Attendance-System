@@ -1,308 +1,108 @@
-$(document).ready(function () {
+/*==================== CLOCK ====================*/
+const hour = document.getElementById('clock-hour'),
+      minutes = document.getElementById('clock-minutes'),
+      seconds = document.getElementById('clock-seconds')
 
-    "use strict";
+const clock = () =>{
+    let date = new Date()
 
-    // Properties
-    const submenu_animation_speed = 200;
+    let hh = date.getHours() * 30,
+        mm = date.getMinutes() * 6,
+        ss = date.getSeconds() * 6
+        
+    // We add a rotation to the elements
+    hour.style.transform = `rotateZ(${hh + mm / 12}deg)`
+    minutes.style.transform = `rotateZ(${mm}deg)`
+    seconds.style.transform = `rotateZ(${ss}deg)`
+}
+setInterval(clock, 1000) // 1000 = 1s
 
-    // Functions
-    const appMenu = function () {
+/*==================== CLOCK & DATE TEXT ====================*/
+const textHour = document.getElementById('text-hour'),
+      textMinutes = document.getElementById('text-minutes'),
+      textAmPm = document.getElementById('text-ampm'),
+    //   dateWeek = document.getElementById('date-day-week'),
+      dateDay = document.getElementById('date-day'),
+      dateMonth = document.getElementById('date-month'),
+      dateYear = document.getElementById('date-year')
 
-        if ($('.horizontal-menu').length) {
+const clockText = () =>{
+    let date = new Date()
 
-            $('.hide-sidebar-toggle-button').on('click', function (e) {
-                e.preventDefault()
-                toggleSidebar()
-            });
+    let hh = date.getHours(),
+        ampm,
+        mm = date.getMinutes(),
+        day = date.getDate(),
+        // dayweek = date.getDay(),
+        month = date.getMonth(),
+        year = date.getFullYear()
 
-            var select_sub_menus = $('.app-menu li:not(.open) ul'),
-            active_page_sub_menu_link = $('.app-menu li.active-page > a');
-
-            var ps;
-
-            if ($(window).width() > 1199) {
-                if (ps != null) {
-                    ps.destroy();
-                    ps = null;
-                }
-            } else {
-                var container = document.querySelector('.app-menu');
-                ps = new PerfectScrollbar(container);
-                
-                // Hide all sub-menus
-                select_sub_menus.hide();
-            }
-
-            $(window).resize(function () {
-                if ($(window).width() > 1199 && ps != null) {
-                    ps.destroy();
-                    ps = null;
-                } else {
-                    var container = document.querySelector('.app-menu');
-                    ps = new PerfectScrollbar(container);
-                
-                    // Hide all sub-menus
-                    select_sub_menus.hide();
-                }
-            });
-
-            $('.app-menu li a').on('click', function (e) {
-
-
-                var sub_menu = $(this).next('ul'),
-                    parent_list_el = $(this).parent('li'),
-                    active_list_element = $('.app-menu .menu-list > li.open'),
-                    show_sub_menu = function () {
-                        sub_menu.slideDown(submenu_animation_speed);
-                        parent_list_el.addClass('open');
-                        ps.update();
-                    },
-                    hide_sub_menu = function () {
-                        sub_menu.slideUp(submenu_animation_speed);
-                        parent_list_el.removeClass('open');
-                        ps.update();
-                    },
-                    hide_active_menu = function () {
-                        parent_list_el.parent().children('.open').children('ul').slideUp(submenu_animation_speed);
-                        parent_list_el.parent().children('.open').removeClass('open');
-                        ps.update();
-                    };
-
-                if (sub_menu.length) {
-
-                    if ($(window).width() > 1199) {
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (!parent_list_el.hasClass('open')) {
-                        if (active_list_element.length) {
-                            hide_active_menu();
-                        };
-                        show_sub_menu();
-                    } else {
-                        hide_sub_menu();
-                    };
-
-                    return false;
-
-                };
-
-
-            });
-        }
-
-        if (!$('.app-sidebar').length) {
-            return;
-        }
-
-        var select_sub_menus = $('.accordion-menu li:not(.open) ul'),
-            active_page_sub_menu_link = $('.accordion-menu li.active-page > a');
-
-
-
-        // Hide all sub-menus
-        select_sub_menus.hide();
-
-        var ps;
-
-        if ($(".app.menu-hover").length && $(window).width() > 1199) {
-            ps.destroy();
-            ps = null;
-        } else {
-            var container = document.querySelector('.app-menu');
-            ps = new PerfectScrollbar(container);
-        }
-
-        $(window).resize(function() {
-            if ($(".app.menu-hover").length && $(window).width() > 1199 && !ps.length) {
-                var container = document.querySelector('.app-menu');
-                ps = new PerfectScrollbar(container);
-            } else if (ps.length) {
-                ps.destroy();
-                ps = null;
-            }
-        });
-
-
-        // Menu
-        $('.accordion-menu li a').on('click', function (e) {
-
-
-            var sub_menu = $(this).next('ul'),
-                parent_list_el = $(this).parent('li'),
-                active_list_element = $('.accordion-menu > li.open'),
-                show_sub_menu = function () {
-                    sub_menu.slideDown(submenu_animation_speed);
-                    parent_list_el.addClass('open');
-                    ps.update();
-                },
-                hide_sub_menu = function () {
-                    sub_menu.slideUp(submenu_animation_speed);
-                    parent_list_el.removeClass('open');
-                    ps.update();
-                },
-                hide_active_menu = function () {
-                    parent_list_el.parent().children('.open').children('ul').slideUp(submenu_animation_speed);
-                    parent_list_el.parent().children('.open').removeClass('open');
-                    ps.update();
-                };
-
-            if (sub_menu.length) {
-
-                if ($('.app').hasClass('menu-hover') && $(window).width() > 1199) {
-                    e.preventDefault();
-                    return;
-                }
-
-                if (!parent_list_el.hasClass('open')) {
-                    if (active_list_element.length) {
-                        hide_active_menu();
-                    };
-                    show_sub_menu();
-                } else {
-                    hide_sub_menu();
-                };
-
-                return false;
-
-            };
-
-
-        });
-
-        if (($('.active-page > ul').length)) {
-            if(!($('.app').hasClass('menu-hover'))) {
-                active_page_sub_menu_link.click();
-            } else if ($(window).width() < 1199) {
-                active_page_sub_menu_link.click();
-            }
-        };
-
-        if (!$('.app').hasClass('menu-off-canvas')) {
-            if ($(window).width() < 1199 && !$('.app').hasClass('sidebar-hidden')) {
-                if(!$('.hide-app-sidebar-mobile').length) {
-                    $('.app').append('<div class="hide-app-sidebar-mobile"></div>'); 
-                }
-                $('.hide-sidebar-toggle-button i').text('last_page');
-            } else {
-                $('.hide-sidebar-toggle-button i').text('first_page');
-            }
-
-            $( window ).resize(function() {
-                if ($(window).width() < 1199 && !$('.app').hasClass('sidebar-hidden')) {
-                    if(!$('.hide-app-sidebar-mobile').length) {
-                        $('.app').append('<div class="hide-app-sidebar-mobile"></div>'); 
-                    }
-                    $('.hide-sidebar-toggle-button i').text('last_page');
-                } else {
-                    $('.hide-sidebar-toggle-button i').text('first_page');
-                }
-            });
-        }
-
-        $('.hide-sidebar-toggle-button').on('click', function (e) {
-            e.preventDefault()
-            toggleSidebar()
-        });
-
-        $('.hide-app-sidebar-mobile').on('click', function (e) {
-            e.preventDefault()
-            toggleSidebar()
-        });
-
-        function toggleSidebar() {
-            if ($('.app').hasClass('menu-off-canvas')) {
-                return false;
-            }
-            $('.app').toggleClass('sidebar-hidden');
-            if ($('.app').hasClass('sidebar-hidden')) {
-                setTimeout(function () {
-                    $('.app-sidebar .logo').addClass('hidden-sidebar-logo');
-                }, 200)
-                if ($(window).width() > 1199) {
-                    $('.hide-sidebar-toggle-button i').text('last_page');
-                } else {
-                    $('.hide-sidebar-toggle-button i').text('first_page');
-                }
-            } else {
-                $('.app-sidebar .logo').removeClass('hidden-sidebar-logo');
-
-                if ($(window).width() > 1199) {
-                    $('.hide-sidebar-toggle-button i').text('first_page');
-                } else {
-                    $('.hide-sidebar-toggle-button i').text('last_page');
-                }
-            }
-            return false;
-        };
-
-
-        $('.menu-off-canvas .hide-sidebar-toggle-button').on('click', function () {
-            $('.app').toggleClass('menu-off-canvas-show');
-            if ($('.app').hasClass('menu-off-canvas-show')) {
-                    $('.app-sidebar .logo').addClass('canvas-sidebar-hidden-logo');
-            } else {
-                setTimeout(function () {
-                    $('.app-sidebar .logo').removeClass('canvas-sidebar-hidden-logo');
-                }, 200)
-            }
-            return false;
-        });
-
-    };
-
-    $('.toggle-search').on('click', function (e) {
-        $('.app').toggleClass('search-visible')
-        e.preventDefault()
-    });
-
-    // Plugins
-    const plugins = function () {
-
-        $('[data-bs-toggle="popover"]').popover();
-        $('[data-bs-toggle="tooltip"]').tooltip();
-
-        window.addEventListener('load', function () {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
-
-    };
-
-    $('.content-menu-toggle').on('click', function() {
-        $('body').toggleClass('content-menu-shown')
-    })
-
-    const components = () => {
-        if ($('.content-menu').length) {
-            const container = document.querySelector('.content-menu');
-            const ps = new PerfectScrollbar(container);
-
-        }
-
+    // We change the hours from 24 to 12 hours and establish whether it is AM or PM
+    if(hh >= 12){
+        hh = hh - 12
+        ampm = 'PM'
+    }else{
+        ampm = 'AM'
     }
 
-    // Init Functions
-    appMenu();
-    plugins();
-    components();
-    if (typeof hljs != "undefined") {
-        hljs.initHighlighting();
-    }
-});
+    // We detect when it's 0 AM and transform to 12 AM
+    if(hh == 0){hh = 12}
 
-$(window).on("load", function () {
-    setTimeout(function() {
-    $('body').addClass('no-loader')}, 1000)
-});
+    // Show a zero before hours
+    if(hh < 10){hh = `0${hh}`}
+
+    // Show time
+    textHour.innerHTML = `${hh}:`
+    
+    // Show a zero before the minutes
+    if(mm < 10){mm = `0${mm}`}
+    
+    // Show minutes
+    textMinutes.innerHTML = mm
+
+    // Show am or pm
+    textAmPm.innerHTML = ampm
+
+    // If you want to show the name of the day of the week
+    // let week = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
+
+    // We get the months of the year and show it
+    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    // We show the day, the month and the year
+    dateDay.innerHTML = day
+    // dateWeek.innerHTML = `${week[dayweek]}`
+    dateMonth.innerHTML = `${months[month]},`
+    dateYear.innerHTML = year
+}
+setInterval(clockText, 1000) // 1000 = 1s
+
+/*==================== DARK/LIGHT THEME ====================*/
+const themeButton = document.getElementById('theme-button')
+const darkTheme = 'dark-theme'
+const iconTheme = 'bxs-sun'
+
+// Previously selected topic (if user selected)
+const selectedTheme = localStorage.getItem('selected-theme')
+const selectedIcon = localStorage.getItem('selected-icon')
+
+// We obtain the current theme that the interface has by validating the dark-theme class
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
+const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'bxs-moon' : 'bxs-sun'
+
+// We validate if the user previously chose a topic
+if (selectedTheme) {
+  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+  themeButton.classList[selectedIcon === 'bxs-moon' ? 'add' : 'remove'](iconTheme)
+}
+
+// Activate / deactivate the theme manually with the button
+themeButton.addEventListener('click', () => {
+    // Add or remove the dark / icon theme
+    document.body.classList.toggle(darkTheme)
+    themeButton.classList.toggle(iconTheme)
+    // We save the theme and the current icon that the user chose
+    localStorage.setItem('selected-theme', getCurrentTheme())
+    localStorage.setItem('selected-icon', getCurrentIcon())
+})

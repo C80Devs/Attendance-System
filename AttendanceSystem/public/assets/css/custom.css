@@ -1,13 +1,17 @@
 /* Your Custom CSS Goes here */
-
 :root {
-    --primaryColor: #195874; /* Define your custom color here */
-    --primaryColorLight: rgba(103, 149, 169, 0.9); /* Lighten the base color by adjusting the alpha channel */
-    --primaryColorDark: #0c4c6b; /* Lighten the base color by adjusting the alpha channel */
+    --primaryColor: #A30000; /* Base color */
+    --primaryColorLight: rgb(131, 131, 131); /* Light version with 50% opacity */
+    --primaryColorDark: #A30000; /* Darker version of the base color */
 }
+
 
 .bgPrimary{
     background: var(--primaryColor);
+}
+
+.bgPrimaryRed {
+    background: var(--primaryColorDark);
 }
 a, a:hover{
     color: var(--primaryColorDark);
@@ -26,19 +30,31 @@ a, a:hover{
     width: 100%;
     height: 100%;
     border: 1px dashed #ccc;
-    overflow-y: auto; /* Add vertical scroll if needed */
+    overflow-y: auto;
 }
 
 .primaryButton {
     background-color: var(--primaryColor);
     color: white;
-    border: none;
-    border-radius: 5px;
-    width: 100px;
+    width: 150px;
+    height: 50px;
     cursor: pointer;
     padding: 15px;
     font-size: 14px;
-    transition: background-color 0.3s ease; /* Add transition effect for hover */
+
+    transition: background-color 0.3s ease;
+}
+
+.primaryButtonClock {
+    background-color: var(--primaryColor);
+    color: white;
+    width: 100%;
+    height: 90px;
+    border-radius: 0;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
 .noColourPrimaryButton {

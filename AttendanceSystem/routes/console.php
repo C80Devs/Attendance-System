@@ -1,8 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\AttendanceController;
+use App\Jobs\UpdateAttendance;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+
+
+Schedule::call(function(){
+    AttendanceController::create(1);
+})->dailyAt('09:00');
+

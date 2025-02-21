@@ -3,9 +3,16 @@
 namespace App\Livewire;
 
 use App\Models\AttendanceModel;
+use App\Models\SettingsModel;
+use App\Models\User;
+use Ballen\Distical\Calculator as DistanceCalculator;
+use Ballen\Distical\Entities\LatLong;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Laravel\Nova\Notifications\NovaNotification;
 use Livewire\Component;
+use Livewire\Livewire;
 
 class Clocker extends Component
 {
@@ -19,42 +26,70 @@ class Clocker extends Component
         $this->updateClockStatus();
     }
 
-    public function clock ($latitude, $longitude): void
+    public function clock ($userLat, $userLng): void
     {
-        if ($latitude === null || $longitude === null) {
-            session()->flash('error', 'Your location cannot be determined yet, Please wait or refresh.');
+        $settings = SettingsModel::first();
+        if (!$settings->clock_active) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => 'Clock functionality is currently disabled.']);
             return;
         }
 
-        $targetLat = 9.080583;
-        $targetLng = 7.414472;
-
-        $distance = $this->calculateDistance($latitude, $longitude, $targetLat, $targetLng);
-
-        if ($distance > 20) {
-            session()->flash('error', 'oops! You are not within 20 meters of the office.');
+        if ($settings->lat === null || $settings->long === null) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => 'Office coordinates have not been set. Please contact your administrator.']);
             return;
         }
 
-        $googleMapsUrl = "https://www.google.com/maps?q={$latitude},{$longitude}";
+        $currentTime = Carbon::now();
+
+        if ($userLat === null || $userLng === null) {
+            $this->dispatch('alert', ['type' => 'warning', 'message' => 'Your location cannot be determined. Please wait 5 seconds and refresh the page.']);
+            return;
+        }
+
+        $officeLat = $settings->lat;
+        $officeLng = $settings->long;
+
+        $officeLocation = new LatLong($officeLat, $officeLng);
+        $currentLocation = new LatLong($userLat, $userLng);
+        $distanceCalculator = new DistanceCalculator($officeLocation, $currentLocation);
+        $distance = $distanceCalculator->get()->asKilometres();
         $user = Auth::user();
         $userId = $user->id;
         $today = now()->toDateString();
+        $googleMapsUrl = "https://www.google.com/maps?q=$userLat,$userLng";
 
+        if ($distance > 0.3) {
+            if (!$user->is_hybrid) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => 'You must be at the office to clock in or out.']);
+                return;
+            }
+
+            $currentDay = strtolower($currentTime->format('l'));
+            if (!in_array($currentDay, $user->days)) {
+                $this->dispatch('alert', ['type' => 'error', 'message' => 'You are not scheduled for remote work today.']);
+                return;
+            }
+        }
+
+        // Proceed with clock in or clock out logic
         $attendanceRecord = AttendanceModel::where('userID', $userId)
             ->whereDate('clockIn', $today)
             ->first();
 
         if ($attendanceRecord) {
-            // If both clockIn and clockOut times are set, user cannot clock in again
-            if ($attendanceRecord->clockIn && $attendanceRecord->clockOut) {
-                session()->flash('error', 'You cannot perform any more clocking for today.');
+            // Clock out logic
+            if ($attendanceRecord->clockIn && !$attendanceRecord->clockOut) {
+                if ($settings->clock_out_anytime || $currentTime->greaterThanOrEqualTo(Carbon::today()->setTime($settings->closing_time, 0))) {
+                    $attendanceRecord->update(['clockOut' => now(), 'clockout_location' => $googleMapsUrl]);
+                    $this->dispatch('alert', ['type' => 'success', 'message' => 'Clocked Out!']);
+                } else {
+                    $this->dispatch('alert', ['type' => 'error', 'message' => 'You cannot clock out before closing time .']);
+                }
             } else {
-                // If record exists and clockOut time is not set, update the clockOut time
-                $attendanceRecord->update(['clockOut' => now(), 'clockout_location' => $googleMapsUrl]);
-                session()->flash('success', 'Clocked Out!');
+                $this->dispatch('alert', ['type' => 'error', 'message' => 'You cannot perform any more clocking for today.']);
             }
         } else {
+            // Clock in logic
             AttendanceModel::create([
                 'userID' => $userId,
                 'clockIn' => now(),
@@ -62,32 +97,15 @@ class Clocker extends Component
                 'device' => request()->userAgent(),
                 'clockin_location' => $googleMapsUrl,
             ]);
-            session()->flash('success', 'Clocked In!');
+
+            $this->dispatch('alert', ['type' => 'success', 'message' => 'Clocked In!']);
         }
 
         $this->updateClockStatus();
     }
 
-// Function to calculate distance between two coordinates using the Haversine formula
-    private function calculateDistance ($lat1, $lon1, $lat2, $lon2): float
-    {
-        $earthRadius = 6371000;
 
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLon = deg2rad($lon2 - $lon1);
-
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-            sin($dLon / 2) * sin($dLon / 2);
-
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        $distance = $earthRadius * $c;
-
-        return $distance;
-    }
-
-    protected function updateClockStatus()
+    protected function updateClockStatus(): void
     {
         $user = Auth::user();
         $userId = $user->id;
@@ -102,7 +120,7 @@ class Clocker extends Component
 
         $this->clockedIn = $attendanceRecord && $attendanceRecord->clockIn && !$attendanceRecord->clockOut;
         $this->clockedOut = $attendanceRecord && $attendanceRecord->clockIn && $attendanceRecord->clockOut;
-        $this->clockInTime = $attendanceRecord ? $attendanceRecord->clockIn : "N/A";
+        $this->clockInTime = $attendanceRecord ? $attendanceRecord->clockIn->format('H:i a') : 'N/A';
         $this->clockOutTime = $attendanceRecord ? $attendanceRecord->clockOut : "N/A";
     }
 

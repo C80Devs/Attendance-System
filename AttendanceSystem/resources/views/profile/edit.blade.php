@@ -1,4 +1,7 @@
 <x-app-layout>
+    @include('partials.header')
+
+    @livewire('header-calendar')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Profile') }}
@@ -26,4 +29,5 @@
             </div>
         </div>
     </div>
+    @include('partials.footer')
 </x-app-layout>
