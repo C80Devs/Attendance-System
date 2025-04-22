@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -32,7 +33,6 @@ class LeaveRequests extends Resource
         return [
             ID::make()->sortable(),
 
-            HasOne::make('Employee', 'getUser', \App\Nova\User::class),
 
             BelongsTo::make('User', 'user', \App\Nova\User::class)
                 ->sortable(),
@@ -45,6 +45,7 @@ class LeaveRequests extends Resource
                 'Declined' => 'danger',
                 'Pending' => 'warning',
             ]),
+            Boolean::make('Approved')->default(true)->hideFromIndex(),
             Text::make('Type')->sortable(),
             DateTime::make('Start Date', 'startDate')->sortable()->rules('required'),
             DateTime::make('End Date', 'endDate')->sortable()->rules('required'),

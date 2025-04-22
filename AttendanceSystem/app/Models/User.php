@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 
-
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, Actionable ,Impersonatable;
+    use Actionable, HasFactory, Impersonatable ,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +22,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'firstName',
         'lastName',
         'phone',
@@ -38,6 +36,9 @@ class User extends Authenticatable
         'is_hybrid',
         'days',
         'active',
+        'fingerprints',
+        'faces',
+
     ];
 
     /**
@@ -62,36 +63,36 @@ class User extends Authenticatable
             'password' => 'hashed',
             'days' => 'array',
             'is_hybrid' => 'boolean',
+            'faces' => 'array',
         ];
     }
 
-    public static function getFirstName() :string
+    public static function getFirstName(): string
     {
         return Auth::user()->firstName."'s - ";
     }
 
-    public function leaves (): HasMany
+    public function leaves(): HasMany
     {
         return $this->hasMany(LeaveModel::class, 'userID', 'id');
     }
 
-    public function monthlyAttendance (): HasMany
+    public function monthlyAttendance(): HasMany
     {
         return $this->hasMany(AttendanceModel::class, 'userID', 'id')
             ->whereMonth('clockIn', Carbon::now()->month)
             ->whereYear('clockIn', Carbon::now()->year);
     }
 
-    public function attendance (): HasMany
+    public function attendance(): HasMany
     {
         return $this->hasMany(AttendanceModel::class, 'userID', 'id');
 
     }
 
-    public function tasks (): HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'userID', 'id');
 
     }
-
 }

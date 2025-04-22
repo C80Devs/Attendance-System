@@ -9,7 +9,7 @@ use Laravel\Nova\Actions\Actionable;
 
 class AttendanceModel extends Model
 {
-    use HasFactory ,Actionable;
+    use Actionable ,HasFactory;
 
     protected $table = 'attendance';
 
@@ -21,7 +21,9 @@ class AttendanceModel extends Model
         'clockIn',
         'clockOut',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'face',
+        'type',
 
     ];
 
@@ -33,7 +35,7 @@ class AttendanceModel extends Model
     /**
      * Get the user that owns the attendance record.
      */
-    public function user (): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'userID', 'id');
     }

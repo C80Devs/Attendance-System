@@ -1,6 +1,5 @@
 @php
 
-    use App\Models\SettingsModel;$settings = SettingsModel::first();
 
     $colorLight = (!empty($settings) && !empty($settings->color))
                     ? $settings->color

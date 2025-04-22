@@ -19,7 +19,9 @@ class HighestMonthlyClockIns extends Table
      */
     public function calculate (NovaRequest $request): mixed
     {
-        $currentMonth = Carbon::now()->month;
+        //$currentMonth = Carbon::now()->month();
+        $currentMonth = Carbon::now()->subMonth()->month;
+
         $currentYear = Carbon::now()->year;
 
         $users = User::select('users.id as userID', 'users.firstName', 'users.lastName')

@@ -33,13 +33,9 @@ class LeaveModel extends Model
         'approved' => 'boolean',
     ];
 
-    public function user (): HasOne
+    public function user (): BelongsTo
     {
-        return $this->HasOne(User::class, 'id', 'userID');
+        return $this->belongsTo(User::class, 'userID');
     }
 
-    public function getUser (): BelongsTo
-    {
-        return $this->BelongsTo(User::class, 'userID', 'id');
-    }
 }

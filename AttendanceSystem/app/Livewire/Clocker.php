@@ -58,7 +58,7 @@ class Clocker extends Component
         $today = now()->toDateString();
         $googleMapsUrl = "https://www.google.com/maps?q=$userLat,$userLng";
 
-        if ($distance > 0.3) {
+        if ($distance > 0.1) {
             if (!$user->is_hybrid) {
                 $this->dispatch('alert', ['type' => 'error', 'message' => 'You must be at the office to clock in or out.']);
                 return;

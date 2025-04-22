@@ -49,13 +49,7 @@
                                         account? <a href="{{ route('register') }}">Sign Up</a></p>
 
             <div class="mx-auto">
-                @error('email')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
 
-                @error('password')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
             </div>
             <div class="auth-submit">
                 <button type="submit" class="btn primaryButton">Sign In</button>

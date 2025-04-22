@@ -124,7 +124,7 @@
         }
 
         .toggle-btn:hover {
-            background-color: gray;
+            background-color: rgb(221, 221, 221);
         }
 
 
@@ -256,16 +256,16 @@
         }
     </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+
+
    @include('partials.style-change')
 </head>
 
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-
-    @php
-    $settings = \App\Models\SettingsModel::first();
- @endphp
     <ul>
         @if(Auth::user())
             <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -296,9 +296,20 @@
                     <i class="fas fa-user"></i> Profile</a></li>
 
             @if(Auth::user()->super_admin)
-                <li><a href="/admin" target="_blank" class="{{ request()->is('admin') ? 'active' : '' }}">
-                        <i class="fas fa-cogs"></i> Admin</a></li>
+                <li>
+                    <a href="/admin" target="_blank" class="{{ request()->is('admin') ? 'active' : '' }}">
+                        <i class="fas fa-cogs"></i> Admin
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin-dashboard') }}" target="_blank"
+                       class="{{ request()->is('admin/*') ? 'active' : '' }}">
+                        <i class="fas fa-cogs"></i> Admin Control
+                    </a>
+                </li>
             @endif
+
 
             <li>
                 <form method="POST" action="{{ route('logout') }}">
@@ -351,11 +362,9 @@
     }
 </script>
 
-
 @once
     @include('partials.alerts')
 @endonce
-
 
 @livewireStyles
 @livewireScripts

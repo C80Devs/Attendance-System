@@ -3,10 +3,7 @@
 @section('content')
     <div class="mb-4">
 
-        @php
-            $settings = SettingsModel::first()
-        @endphp
-        <h4 class="text-center fw-bold text-muted">{{$settings->name ?? config('app.name')}} </h4>
+
         @if (is_null(Auth::user()->date_of_birth))
             <div class="alert text-center">
                 <p>Please update your birthday. <a href="{{ route('profile') }}">Go to Profile</a></p>
@@ -60,7 +57,7 @@
 
         @include('partials.highlights')
         @include('partials.birthday')
-      
+
 
 
         <script>

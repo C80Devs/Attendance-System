@@ -1,8 +1,6 @@
 <!-- Include Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-@php
-    use App\Models\SettingsModel;$settings = SettingsModel::first();
-@endphp
+
 <script>
     toastr.options = {
         "closeButton": false,
