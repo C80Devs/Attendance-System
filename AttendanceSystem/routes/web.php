@@ -6,6 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+use App\Http\Controllers\CsvImportController;
+
+Route::get('/import-csv-data', [CsvImportController::class, 'importCsvData']);
+
 Route::middleware(['auth', 'verified', 'account_active'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
     Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
@@ -44,4 +49,4 @@ Route::middleware(['auth', 'account_active'])->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -1,90 +1,162 @@
-@include('partials.header')
-<body>
-<div class="app horizontal-menu app-auth-sign-up align-content-stretch d-flex flex-wrap justify-content-end">
-    <div class="app-auth-background"></div>
-    <div class="app-auth-container ">
-        <div class="">
-            <a href="{{ route('dashboard') }}">
-                <img src="{{ asset('c80.svg') }}" alt="{{ env('APP_NAME') }} Logo">
+<x-guest-layout>
+    <x-slot name="title">Create Account</x-slot>
+    <x-slot name="description">Join our attendance management system to track time, manage tasks, and collaborate with your team.</x-slot>
+    <x-slot name="formTitle">Create a new account</x-slot>
+    <x-slot name="formSubtitle">Enter your details to register</x-slot>
+
+    <form action="{{ route('register') }}" method="POST" class="space-y-6">
+        @csrf
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="John"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+
+            <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Doe"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        placeholder="09012345678"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="••••••••"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input
+                        required
+                        type="password"
+                        id="password_confirmation"
+                        name="password_confirmation"
+                        placeholder="••••••••"
+                        class="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out sm:text-sm"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150 ease-in-out"
+            >
+                Create Account
+            </button>
+        </div>
+    </form>
+
+    <div class="mt-6">
+        <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-slate-50 text-gray-500">
+                    Already have an account?
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <a
+                href="{{ route('login') }}"
+                class="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+            >
+                Sign in to your account
             </a>
         </div>
-
-        <p class="auth-description">Please enter your credentials to create an account.<br>Already have an account? <a
-                href="{{route('login')}}">Sign In</a></p>
-
-        <form action="{{ route('register') }}" method="POST">
-            @csrf <!-- CSRF Protection -->
-
-
-
-            <div class="auth-credentials m-b">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input required type="text" class="form-control m-b-md" id="firstName" name="firstName"
-                               aria-describedby="firstName" placeholder="Enter first name">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input required type="text" class="form-control m-b-md" id="lastName" name="lastName"
-                               aria-describedby="lastName" placeholder="Enter last name">
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">Email address</label>
-                        <input requiredtype="email" class="form-control m-b-md" id="email" name="email"
-                               aria-describedby="email" placeholder="example@c80.com">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input required type="text" class="form-control m-b-md" id="phone" name="phone"
-                               aria-describedby="phone" placeholder="09012345678">
-                    </div>
-                </div>
-<div class="row">
-    <div class="col-md-6">
-        <label for="password" class="form-label">Password</label>
-        <input required type="password" class="form-control m-b-md" id="password" name="password"
-               aria-describedby="password"
-               placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
     </div>
-
-    <div class="col-md-6">
-        <label for="password_confirmation" class="form-label">Confirm Password</label>
-        <input required type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-               aria-describedby="password_confirmation" placeholder="Confirm password">
-    </div>
-</div>
-
-
-
-            </div>
-
-            <div class="auth-submit mt-2">
-                @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <button type="submit" class="btn primaryButton mt-2">Sign Up</button>
-            </div>
-        </form>
-
-        <div class="divider"></div>
-        <div class="auth-alts">
-            {{--    <a href="#" class="auth-alts-google"></a>
-            <a href="#" class="auth-alts-facebook"></a>
-            <a href="#" class="auth-alts-twitter"></a>--}}
-        </div>
-    </div>
-</div>
-
-</body>
+</x-guest-layout>

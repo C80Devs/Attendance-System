@@ -7,6 +7,7 @@ use App\Nova\Metrics\HighestMonthlyClockIns;
 use App\Nova\Metrics\TasksForToday;
 use App\Nova\Metrics\TodayClockIns;
 use App\Nova\Metrics\TotalClockIns;
+use App\Nova\Metrics\TotalLeaveRequests;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
@@ -21,6 +22,7 @@ class Main extends Dashboard
     {
         return [
             new HighestMonthlyClockIns(),
+            new TotalLeaveRequests,
             new TodayClockIns(),
             new TotalClockIns(),
             new AverageWorkingHours(),

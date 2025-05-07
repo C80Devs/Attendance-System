@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -28,6 +29,7 @@ class DashboardController extends Controller
         $currentYear = Carbon::now()->year;
 
         $upcomingBirthdays = User::whereMonth('date_of_birth', $currentMonth)
+            ->orderByRaw('DAY(date_of_birth)')
             ->get(['firstName', 'date_of_birth']);
 
         $numberOfWorkingDays = collect(
@@ -82,6 +84,7 @@ class DashboardController extends Controller
             ->limit(3)
             ->get();
 
+
         $totalTasks = Task::where('userID', $userId)->count();
 
         $completedTasks = Task::where('userID', $userId)
@@ -99,8 +102,8 @@ class DashboardController extends Controller
 
         $announcements = AnnouncementModel::orderBy('expires_at', 'desc')
                     ->take(10)->get();
-                
-                \Log::info('All announcements:', [
+
+        Log::info('All announcements:', [
                     'count' => $announcements->count(),
                     'data' => $announcements->toArray()
                 ]);
@@ -147,10 +150,5 @@ class DashboardController extends Controller
     {
         $users = User::select('id','firstName', 'lastName', 'phone', 'email')->paginate(10);
         return view('employee-board', compact('users'));
-
     }
-
-
-
-
 }

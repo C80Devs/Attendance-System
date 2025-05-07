@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\AttendanceModel;
+use App\Nova\Filters\FilterByMonth;
 use Carbon\Carbon;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
@@ -81,11 +82,12 @@ class Attendance extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
-        return [];
+        return [
+            new FilterByMonth(),
+        ];
     }
-
     /**
      * Get the lenses available for the resource.
      *

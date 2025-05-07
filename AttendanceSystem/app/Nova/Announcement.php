@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\FilterByMonth;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\DateTime;
@@ -52,6 +53,13 @@ class Announcement extends Resource
                 ->onlyOnDetail(),
             DateTime::make('Updated At')
                 ->onlyOnDetail(),
+        ];
+    }
+
+    public function filters(NovaRequest $request): array
+    {
+        return [
+            new FilterByMonth(),
         ];
     }
 }

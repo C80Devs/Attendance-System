@@ -6,7 +6,7 @@ use App\Models\SettingsModel;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,11 +20,20 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        Paginator::useBootstrapFour();
 
-        $settings = SettingsModel::first();
-        View::share('settings', $settings);
+
+
+public function boot(): void
+{
+    Paginator::useBootstrapFour();
+
+    if (!in_array(request()->ip(), ['127.0.0.1', '::1'])) {
+        URL::forceScheme('https');
     }
+
+    $settings = SettingsModel::first();
+    View::share('settings', $settings);
+}
+
+
 }

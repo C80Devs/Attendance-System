@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\LeaveModel;
 use App\Models\User;
 use App\Nova\Actions\ApproveDeclineLeave;
+use App\Nova\Filters\FilterByMonth;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\BelongsTo;
@@ -65,6 +66,13 @@ class LeaveRequests extends Resource
     {
         return [
             new ApproveDeclineLeave(),
+        ];
+    }
+
+    public function filters(NovaRequest $request): array
+    {
+        return [
+            new FilterByMonth(),
         ];
     }
 }

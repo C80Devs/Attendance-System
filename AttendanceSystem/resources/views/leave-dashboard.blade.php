@@ -1,7 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
 
     <livewire:LeaveHistory/>
 
-@endsection
+</x-app-layout>

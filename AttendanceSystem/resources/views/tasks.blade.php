@@ -1,7 +1,6 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
 
     <livewire:TasksComponent/>
 
-@endsection
+</x-app-layout>
+
