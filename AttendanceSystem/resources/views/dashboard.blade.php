@@ -81,128 +81,226 @@
                 </div>
             </div>
 
-            <!-- Leave Stats Card -->
-            @if($settings->leave_active)
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 p-5 relative overflow-hidden group">
-                <!-- Background decoration -->
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <!-- Leave Stats Card -->
+@if($settings->leave_active)
+<div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 p-5 relative overflow-hidden group">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                <div class="relative z-10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Leave Balance</h2>
-                        <span class="text-xs font-medium px-2.5 py-1 bg-blue-100 text-primary/90 rounded-full animate-pulse">{{ date('Y') }}</span>
-                    </div>
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-800">Leave Balance</h2>
+            <span class="text-xs font-medium px-2.5 py-1 bg-blue-100 text-primary/90 rounded-full animate-pulse">{{ date('Y') }}</span>
+        </div>
 
-                    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary/60 transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 group-hover:bg-blue-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-gray-500">Remaining Days</p>
+                    <h3 class="text-xl font-bold">{{$remainingLeaveDays}}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            @if(count($topLeaveTypes) > 0)
+                @foreach($topLeaveTypes as $leaveType)
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-primary/50 border border-blue-100 transition-all duration-300 hover:bg-blue-100 transform hover:scale-[1.02] hover:shadow-sm">
                         <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary/60 transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 group-hover:bg-blue-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary/60 mr-3 transition-transform duration-500 hover:rotate-12 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
                                 </svg>
                             </div>
-                            <div class="ml-3">
-                                <p class="text-sm text-gray-500">Remaining Days</p>
-                                <h3 class="text-xl font-bold">{{$remainingLeaveDays}}</h3>
-                            </div>
+                            <p class="text-sm font-medium text-white">{{ $leaveType->type }}</p>
                         </div>
+                        <span class="text-lg font-semibold text-white">{{ $leaveType->leave_count }}</span>
                     </div>
+                @endforeach
+            @else
+                <!-- Enhanced Empty State for Leave Records -->
+                <div class="p-6 rounded-lg bg-blue-50 border border-blue-100 text-center transition-all duration-300 hover:bg-blue-100 transform hover:scale-[1.01]">
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-blue-400 mb-3 shadow-sm animate-pulse">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-base font-medium text-gray-700 mb-1">No Leave Records Yet</h4>
+                        <p class="text-sm text-gray-500 mb-3">Your leave history will appear here once you've taken time off.</p>
+                        <a href="/leave" class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Request Leave
+                        </a>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+@elseif(!$settings->leave_active)
+<div class="bg-white rounded-xl shadow-md hover:shadow-md transition-all duration-500 p-5 relative overflow-hidden group opacity-90">
+    <!-- Background decoration - subtle gray for disabled state -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent opacity-100"></div>
 
-                    <div class="space-y-3">
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-500">Leave Management</h2>
+            <span class="text-xs font-medium px-2.5 py-1 bg-gray-100 text-gray-500 rounded-full">Disabled</span>
+        </div>
 
-                        @if(count($topLeaveTypes) > 0)
-                            @foreach($topLeaveTypes as $leaveType)
-                                <div class="flex items-center justify-between p-3 rounded-lg bg-primary/50 border border-blue-100 transition-all duration-300 hover:bg-blue-100 transform hover:scale-[1.02] hover:shadow-sm">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary/60 mr-3 transition-transform duration-500 hover:rotate-12 shadow-sm">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
-                                            </svg>
-                                        </div>
-                                        <p class="text-sm font-medium text-white">{{ $leaveType->type }}</p>
-                                    </div>
-                                    <span class="text-lg font-semibold text-white">{{ $leaveType->leave_count }}</span>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="p-3 rounded-lg bg-blue-50 text-center transition-all duration-300 hover:bg-blue-100">
-                                <p class="text-sm text-gray-500">No leave records found</p>
-                            </div>
-                        @endif
+        <div class="p-6 rounded-lg bg-gray-50 border border-gray-100 text-center">
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-gray-400 mb-3 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h4 class="text-base font-medium text-gray-600 mb-1">Leave Management is Disabled</h4>
+                <p class="text-sm text-gray-500 mb-3">This feature is currently not available in your organization.</p>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+<!-- Task Stats Card -->
+@if($settings->task_active)
+<div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 p-5 relative overflow-hidden group">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-800">Task Management</h2>
+            <span class="text-xs font-medium px-2.5 py-1 bg-primary-100 text-primary-700 rounded-full animate-pulse">{{ $totalTasks }} Total</span>
+        </div>
+
+        @if($totalTasks > 0)
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 group-hover:bg-primary-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-gray-500">Completion Rate</p>
+                        <h3 class="text-xl font-bold">{{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%</h3>
                     </div>
                 </div>
             </div>
-            @endif
 
-            <!-- Task Stats Card -->
-            @if($settings->task_active)
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 p-5 relative overflow-hidden group">
-                <!-- Background decoration -->
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                <div class="relative z-10">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-semibold text-gray-800">Task Management</h2>
-                        <span class="text-xs font-medium px-2.5 py-1 bg-primary-100 text-primary-700 rounded-full animate-pulse">{{ $totalTasks }} Total</span>
+            <div class="grid grid-cols-3 gap-3">
+                <div class="flex flex-col items-center p-3 rounded-lg bg-emerald-50 border border-emerald-100 transition-all duration-300 hover:bg-emerald-100 transform hover:scale-[1.05] hover:shadow-sm">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 group-hover:bg-primary-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm text-gray-500">Completion Rate</p>
-                                <h3 class="text-xl font-bold">{{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%</h3>
-                            </div>
-                        </div>
+                    <p class="text-xs text-gray-600">Completed</p>
+                    <p class="text-lg font-semibold text-emerald-700">{{ $completedTasks }}</p>
+                </div>
+                <div class="flex flex-col items-center p-3 rounded-lg bg-amber-50 border border-amber-100 transition-all duration-300 hover:bg-amber-100 transform hover:scale-[1.05] hover:shadow-sm">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-amber-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
                     </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="flex flex-col items-center p-3 rounded-lg bg-emerald-50 border border-emerald-100 transition-all duration-300 hover:bg-emerald-100 transform hover:scale-[1.05] hover:shadow-sm">
-                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <p class="text-xs text-gray-600">Completed</p>
-                            <p class="text-lg font-semibold text-emerald-700">{{ $completedTasks }}</p>
-                        </div>
-                        <div class="flex flex-col items-center p-3 rounded-lg bg-amber-50 border border-amber-100 transition-all duration-300 hover:bg-amber-100 transform hover:scale-[1.05] hover:shadow-sm">
-                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-amber-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                                </svg>
-                            </div>
-                            <p class="text-xs text-gray-600">Ongoing</p>
-                            <p class="text-lg font-semibold text-amber-700">{{ $ongoingTasks }}</p>
-                        </div>
-                        <div class="flex flex-col items-center p-3 rounded-lg bg-rose-50 border border-rose-100 transition-all duration-300 hover:bg-rose-100 transform hover:scale-[1.05] hover:shadow-sm">
-                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-rose-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </div>
-                            <p class="text-xs text-gray-600">Failed</p>
-                            <p class="text-lg font-semibold text-rose-700">{{ $failedTasks }}</p>
-                        </div>
+                    <p class="text-xs text-gray-600">Ongoing</p>
+                    <p class="text-lg font-semibold text-amber-700">{{ $ongoingTasks }}</p>
+                </div>
+                <div class="flex flex-col items-center p-3 rounded-lg bg-rose-50 border border-rose-100 transition-all duration-300 hover:bg-rose-100 transform hover:scale-[1.05] hover:shadow-sm">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-rose-600 mb-2 transition-transform duration-500 hover:rotate-12 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </div>
-
-                    <!-- Task Progress Bar -->
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <div class="flex justify-between text-xs mb-1">
-                            <span class="font-medium text-gray-600">Task Progress</span>
-                            <span class="font-medium text-primary">{{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-primary/40 to-primary/60 rounded-full transition-all duration-1000 ease-out"
-                                style="width: {{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%"></div>
-                        </div>
-                    </div>
+                    <p class="text-xs text-gray-600">Failed</p>
+                    <p class="text-lg font-semibold text-rose-700">{{ $failedTasks }}</p>
                 </div>
             </div>
-            @endif
+
+            <!-- Task Progress Bar -->
+            <div class="mt-4 pt-3 border-t border-gray-100">
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="font-medium text-gray-600">Task Progress</span>
+                    <span class="font-medium text-primary">{{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%</span>
+                </div>
+                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-primary/40 to-primary/60 rounded-full transition-all duration-1000 ease-out"
+                        style="width: {{ $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0 }}%"></div>
+                </div>
+            </div>
+        @else
+            <!-- Enhanced Empty State for Tasks -->
+            <div class="p-6 rounded-lg bg-primary-50 border border-primary-100 text-center transition-all duration-300 hover:bg-primary-100 transform hover:scale-[1.01]">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary-500 mb-3 shadow-sm animate-bounce">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-base font-medium text-gray-700 mb-1">No Tasks Yet</h4>
+                    <p class="text-sm text-gray-500 mb-3">Start creating tasks to track your progress and stay organized.</p>
+                    <a href="/tasks" class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Create First Task
+                    </a>
+                </div>
+
+                <!-- Decorative elements for empty state -->
+                <div class="relative mt-6 h-24 mx-auto w-3/4 opacity-50">
+                    <div class="absolute top-0 left-0 w-8 h-8 rounded border border-primary-200 bg-white"></div>
+                    <div class="absolute top-4 left-12 w-24 h-4 rounded bg-primary-200"></div>
+                    <div class="absolute top-12 left-4 w-32 h-4 rounded bg-primary-100"></div>
+                    <div class="absolute top-0 right-8 w-6 h-6 rounded-full border border-primary-200 bg-white"></div>
+                    <div class="absolute bottom-0 right-12 w-20 h-4 rounded bg-primary-200"></div>
+                    <div class="absolute bottom-8 right-4 w-16 h-4 rounded bg-primary-100"></div>
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
+@elseif(!$settings->task_active)
+<div class="bg-white rounded-xl shadow-md hover:shadow-md transition-all duration-500 p-5 relative overflow-hidden group opacity-90">
+    <!-- Background decoration - subtle gray for disabled state -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent opacity-100"></div>
+
+    <div class="relative z-10">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-500">Task Management</h2>
+            <span class="text-xs font-medium px-2.5 py-1 bg-gray-100 text-gray-500 rounded-full">Disabled</span>
+        </div>
+
+        <div class="p-6 rounded-lg bg-gray-50 border border-gray-100 text-center">
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-gray-400 mb-3 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                </div>
+                <h4 class="text-base font-medium text-gray-600 mb-1">Task Management is Disabled</h4>
+                <p class="text-sm text-gray-500 mb-3">This feature is currently not available in your organization.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+@endif
+
+
         </div>
 
 <!-- Birthday Modal Component -->
@@ -409,10 +507,8 @@
                         }
                         document.head.removeChild(style);
                     }, (duration + delay) * 1000);
-                }, i * 200); // Staggered creation for more natural effect
-            }
+                }, i * 200);
 
-            // Continue creating balloons for a festive effect
             setTimeout(() => {
                 if (document.getElementById('birthdayModal') && !document.getElementById('birthdayModal').classList.contains('hidden')) {
                     createMoreBalloons();
@@ -686,7 +782,6 @@
                 path: '{{ asset("assets/ballons.json") }}'
             });
 
-            // Add confetti effect using canvas
             const confettiCanvas = document.createElement('canvas');
             confettiCanvas.style.position = 'absolute';
             confettiCanvas.style.top = '0';
@@ -755,7 +850,6 @@
             // Start confetti
             confetti.start();
 
-            // Clean up animations after completion
             animation.addEventListener('complete', function() {
                 setTimeout(() => {
                     animationContainer.style.display = 'none';

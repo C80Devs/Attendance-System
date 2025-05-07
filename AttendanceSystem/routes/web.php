@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Models\SettingsModel;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,9 +18,7 @@ Route::middleware(['auth', 'verified', 'account_active'])->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
     Route::get('/activity', [DashboardController::class, 'showActivity'])->name('activity');
 
-    Route::get('/leave', function () {
-        return view('leave-dashboard');
-    })->name('leave');
+
 
     Route::prefix('admin')->middleware('isAdmin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin-dashboard');
@@ -27,9 +27,19 @@ Route::middleware(['auth', 'verified', 'account_active'])->group(function () {
 
     })->middleware(['isAdmin']);
 
+
+
     Route::get('/tasks', function () {
+        $settings = SettingsModel::first();
+        abort_if(!$settings->task_active, 403, 'Task management is disabled.');
         return view('tasks');
     })->name('tasks');
+
+    Route::get('/leave', function () {
+        $settings = SettingsModel::first();
+        abort_if(!$settings->leave_active, 403, 'Leave management is disabled.');
+        return view('leave-dashboard');
+    })->name('leave');
 
     Route::get('/poll', function () {
         return view('poll-dashboard');
