@@ -251,7 +251,6 @@
     </div>
 </div>
 
-<!-- Add this to your existing styles section -->
 <style>
     /* Balloon animation */
     @keyframes float-up {
@@ -293,7 +292,6 @@
     }
 </style>
 
-<!-- Add this to your existing script section -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const isBirthday = checkIfBirthdayToday();
@@ -302,12 +300,10 @@
             showBirthdayModal();
         }
 
-        // Close modal when clicking the close button
         document.getElementById('closeBirthdayModal').addEventListener('click', function() {
             hideBirthdayModal();
         });
 
-        // Function to check if today is the user's birthday
         function checkIfBirthdayToday() {
             @if(Auth::check() && !is_null(Auth::user()->date_of_birth))
                 const birthDate = new Date("{{ Auth::user()->date_of_birth }}");
@@ -320,56 +316,50 @@
             @endif
         }
 
-        // Function to show the birthday modal with animations
         function showBirthdayModal() {
             const modal = document.getElementById('birthdayModal');
             const backdrop = document.getElementById('modal-backdrop');
             const content = document.getElementById('modal-content');
 
-            // Show the modal
             modal.classList.remove('hidden');
 
-            // Animate in
             setTimeout(() => {
                 backdrop.classList.remove('opacity-0');
                 content.classList.remove('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
                 content.classList.add('opacity-100', 'translate-y-0', 'sm:scale-100');
 
-                // Start balloon animation
                 createBalloons();
             }, 10);
 
-            // Store in localStorage to prevent showing again today
             localStorage.setItem('birthdayModalShown', new Date().toDateString());
         }
 
-        // Function to hide the birthday modal with animations
         function hideBirthdayModal() {
             const modal = document.getElementById('birthdayModal');
             const backdrop = document.getElementById('modal-backdrop');
             const content = document.getElementById('modal-content');
 
-            // Animate out
             backdrop.classList.add('opacity-0');
             content.classList.remove('opacity-100', 'translate-y-0', 'sm:scale-100');
             content.classList.add('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
 
-            // Hide the modal after animation completes
             setTimeout(() => {
                 modal.classList.add('hidden');
 
-                // Clear balloons
                 const balloonsContainer = document.getElementById('balloons-container');
                 balloonsContainer.innerHTML = '';
             }, 300);
         }
 
-        // Create falling balloons
         function createBalloons() {
             const balloonsContainer = document.getElementById('balloons-container');
             const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE', '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40', '#FF6E40'];
-            const balloonCount = 30;
+            const balloonCount = 50; // Increased balloon count for more festive effect
 
+            // Clear any existing balloons
+            balloonsContainer.innerHTML = '';
+
+            // Create balloons with staggered animation
             for (let i = 0; i < balloonCount; i++) {
                 setTimeout(() => {
                     const balloon = document.createElement('div');
@@ -381,7 +371,10 @@
                     const color = colors[Math.floor(Math.random() * colors.length)];
                     const duration = Math.floor(Math.random() * 5) + 8; // 8-13s
                     const delay = Math.random() * 5; // 0-5s
+                    const rotation = Math.random() * 360; // Random initial rotation
+                    const wobble = Math.random() * 20 - 10; // Random wobble effect
 
+                    // Create balloon SVG with string
                     balloon.innerHTML = `
                         <svg width="${size}" height="${size * 1.2}" viewBox="0 0 50 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M25 0C11.2 0 0 11.2 0 25C0 36.3 7.8 45.9 18.5 48.5C19.3 48.7 20 49.4 20 50.2V52.5C20 53.3 19.3 54 18.5 54H16C15.4 54 15 54.4 15 55V59C15 59.6 15.4 60 16 60H34C34.6 60 35 59.6 35 59V55C35 54.4 34.6 54 34 54H31.5C30.7 54 30 53.3 30 52.5V50.2C30 49.4 30.7 48.7 31.5 48.5C42.2 45.9 50 36.3 50 25C50 11.2 38.8 0 25 0Z" fill="${color}"/>
@@ -392,6 +385,20 @@
                     balloon.style.left = `${left}%`;
                     balloon.style.animationDuration = `${duration}s`;
                     balloon.style.animationDelay = `${delay}s`;
+                    balloon.style.transform = `rotate(${rotation}deg)`;
+
+                    balloon.style.animation = `float-up ${duration}s ease-in-out forwards, wobble ${Math.random() * 2 + 1}s ease-in-out infinite alternate`;
+
+                    const keyframes = `
+                        @keyframes wobble {
+                            0% { transform: translateX(0) rotate(${rotation}deg); }
+                            100% { transform: translateX(${wobble}px) rotate(${rotation + wobble}deg); }
+                        }
+                    `;
+
+                    const style = document.createElement('style');
+                    style.innerHTML = keyframes;
+                    document.head.appendChild(style);
 
                     balloonsContainer.appendChild(balloon);
 
@@ -400,9 +407,64 @@
                         if (balloonsContainer.contains(balloon)) {
                             balloonsContainer.removeChild(balloon);
                         }
+                        document.head.removeChild(style);
                     }, (duration + delay) * 1000);
-                }, i * 200); // Stagger balloon creation
+                }, i * 200); // Staggered creation for more natural effect
             }
+
+            // Continue creating balloons for a festive effect
+            setTimeout(() => {
+                if (document.getElementById('birthdayModal') && !document.getElementById('birthdayModal').classList.contains('hidden')) {
+                    createMoreBalloons();
+                }
+            }, 5000);
+        }
+
+        // Function to create additional balloons for continuous effect
+        function createMoreBalloons() {
+            const balloonsContainer = document.getElementById('balloons-container');
+            const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE', '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40', '#FF6E40'];
+            const balloonCount = 20; // Fewer balloons for subsequent waves
+
+            for (let i = 0; i < balloonCount; i++) {
+                setTimeout(() => {
+                    if (document.getElementById('birthdayModal') && !document.getElementById('birthdayModal').classList.contains('hidden')) {
+                        const balloon = document.createElement('div');
+                        balloon.className = 'balloon';
+
+                        // Random position, size, and color
+                        const size = Math.floor(Math.random() * 40) + 40;
+                        const left = Math.floor(Math.random() * 100);
+                        const color = colors[Math.floor(Math.random() * colors.length)];
+                        const duration = Math.floor(Math.random() * 5) + 8;
+
+                        balloon.innerHTML = `
+                            <svg width="${size}" height="${size * 1.2}" viewBox="0 0 50 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 0C11.2 0 0 11.2 0 25C0 36.3 7.8 45.9 18.5 48.5C19.3 48.7 20 49.4 20 50.2V52.5C20 53.3 19.3 54 18.5 54H16C15.4 54 15 54.4 15 55V59C15 59.6 15.4 60 16 60H34C34.6 60 35 59.6 35 59V55C35 54.4 34.6 54 34 54H31.5C30.7 54 30 53.3 30 52.5V50.2C30 49.4 30.7 48.7 31.5 48.5C42.2 45.9 50 36.3 50 25C50 11.2 38.8 0 25 0Z" fill="${color}"/>
+                                <path d="M25 50.2V60" stroke="#888" stroke-width="1" stroke-linecap="round"/>
+                            </svg>
+                        `;
+
+                        balloon.style.left = `${left}%`;
+                        balloon.style.animationDuration = `${duration}s`;
+
+                        balloonsContainer.appendChild(balloon);
+
+                        setTimeout(() => {
+                            if (balloonsContainer.contains(balloon)) {
+                                balloonsContainer.removeChild(balloon);
+                            }
+                        }, duration * 1000);
+                    }
+                }, i * 300);
+            }
+
+            // Continue creating balloons if modal is still open
+            setTimeout(() => {
+                if (document.getElementById('birthdayModal') && !document.getElementById('birthdayModal').classList.contains('hidden')) {
+                    createMoreBalloons();
+                }
+            }, 8000);
         }
     });
 </script>
